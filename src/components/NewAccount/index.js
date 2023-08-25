@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title } from './styles';
+import { Title, Container } from './styles';
 
 import { Input } from '../Input';
 import { Button } from '../Button';
@@ -7,6 +7,10 @@ import { Button } from '../Button';
 import HeaderPages from '../HeaderPages';
 import { useState } from 'react';
 import FormGroup from '../FormGroup';
+
+import isEmailValid from '../../utils/isValidEmail';
+import formatNumberPhone from '../../utils/formatNumberPhone';
+import formatCpf from '../../utils/formatCpf';
 
 function NewAccount() {
     const [nome, setNome] = useState('');
@@ -43,7 +47,7 @@ function NewAccount() {
     };
 
     const handleCpf = (e) => {
-        setCpf(e.target.value);
+        setCpf(formatCpf(e.target.value));
         if (!e.target.value) {
             setErrorCpf('Este campo é obrigatório');
         } else {
@@ -61,7 +65,7 @@ function NewAccount() {
     };
 
     const handleTelefone = (e) => {
-        setTelefone(e.target.value);
+        setTelefone(formatNumberPhone(e.target.value));
         if (!e.target.value) {
             setErrorTelefone('Este campo é obrigatório');
         } else {
@@ -71,8 +75,8 @@ function NewAccount() {
 
     const handleEmail = (e) => {
         setEmail(e.target.value);
-        if (!e.target.value) {
-            setErrorEmail('Este campo é obrigatório');
+        if (e.target.value && !isEmailValid(e.target.value)) {
+            setErrorEmail('E-mail com formato inválido');
         } else {
             setErrorEmail('');
         }
@@ -124,14 +128,12 @@ function NewAccount() {
             });
     }
 
-    console.log(data)
-
     return (
-        <>
+        <Container>
             <HeaderPages />
             <form onSubmit={formSubmit}>
                 <Title>
-                    Cadastrar nova conta
+                    Criar conta CubosBank
                 </Title>
                 <FormGroup error={errorNome}>
                     <Input
@@ -145,7 +147,9 @@ function NewAccount() {
                 <FormGroup error={errorCpf}>
                     <Input
                         placeholder='CPF'
-                        type='number'
+                        type='text'
+                        maxLength={14}
+                        minLength={14}
                         value={cpf}
                         onChange={handleCpf}
                     />
@@ -163,7 +167,8 @@ function NewAccount() {
                 <FormGroup error={errorTelefone}>
                     <Input
                         placeholder='Telefone'
-                        type='number'
+                        type='text'
+                        maxLength={15}
                         value={telefone}
                         onChange={handleTelefone}
                     />
@@ -202,10 +207,11 @@ function NewAccount() {
                 >
                     Criar conta
                 </Button>
-                {data && <spam>{data.mensagem}</spam>}
+                {data.statusCode === 201 && <span className='success'>{data.mensagem} Você será redirecionado para a tela de login!</span>}
+                {data.statusCode === 400 && <span className='error'>{data.mensagem}</span>}
 
             </form>
-        </>
+        </ Container>
 
     );
 };

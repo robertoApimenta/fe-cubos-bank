@@ -18,7 +18,6 @@ function App() {
         <GlobalStyles />
         <Header />
         <Routes />
-        App
       </ Container>
     </ThemeProvider>
 

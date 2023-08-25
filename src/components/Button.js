@@ -9,6 +9,7 @@ export const Button = styled.button`
     color: #fff;
     font-weight: bold;
     margin-top: 8px;
+    transition: all 0.2s ease-in;
 
     &:hover {
         background: ${({ theme }) => theme.colors.primary.light};

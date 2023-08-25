@@ -9,6 +9,7 @@ export const Input = styled.input`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
     outline: none;
     border: 2px solid #fff;
+    transition: all 0.2s ease-in;
 
     &:focus {
         border: 2px solid ${({ theme }) => theme.colors.primary.main};
